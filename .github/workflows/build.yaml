@@ -1,0 +1,30 @@
+name: Build PyTorch and TorchVision and Deploy
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+        
+      - name: Build Docker Image
+        run: docker build -t "build:latest" .
+            
+      - name: Start Docker Container
+        run: |
+          docker run -d --name build_run build:latest
+          
+      - name: Extract Files from Container
+        run: |
+          mkdir artifacts
+          docker cp build_run:/path/to/generated/files ./artifacts
+          
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: generated_files
+          path: ./artifacts

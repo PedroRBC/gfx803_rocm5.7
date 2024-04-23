@@ -26,17 +26,17 @@ RUN export ROC_ENABLE_PRE_VEGA=${ROC_ENABLE_PRE_VEGA} && \
     export FORCE_CUDA=${FORCE_CUDA} && \
     true
 
+RUN apt install software-properties-common -y && add-apt-repository ppa:deadsnakes/ppa && apt update && \
+    apt install git python3.10 python3.10-venv python3.10-dev -y && \
+    curl -sS https://bootstrap.pypa.io/get-pip.py | python3.10 && \
+    ls -la /usr/bin/python3 && rm /usr/bin/python3 && ln -s python3.10 /usr/bin/python3
+
 # Update System and install python virtual Env
 RUN apt-get -y update && \
     apt-get install -y --no-install-recommends virtualenv google-perftools && \
     pip install --upgrade pip wheel && \
     pip install cmake mkl mkl-include && \ 
     true
-
-RUN apt install software-properties-common -y && add-apt-repository ppa:deadsnakes/ppa && apt update && \
-    apt install git python3.10 python3.10-venv python3.10-dev -y && \
-    curl -sS https://bootstrap.pypa.io/get-pip.py | python3.10 && \
-    ls -la /usr/bin/python3 && rm /usr/bin/python3 && ln -s python3.10 /usr/bin/python3
 
 # git clone PyTorch Version you need for
 ### PyTorch Version
@@ -60,7 +60,7 @@ WORKDIR /pytorch
 RUN echo "BULDING PYTORCH $(git describe --tags --exact | sed 's/^v//')" && \
     true 
 
-RUN python3 setup.py clean && \
+RUN export USE_ROCM=1 && USE_ROCM=1 python3 setup.py clean && \
     pip install -r requirements.txt && \
     true
 
@@ -71,6 +71,7 @@ RUN python3 tools/amd_build/build_amd.py && \
 RUN echo "** BUILDING PYTORCH *** " && \
     export PYTORCH_BUILD_VERSION=$(git describe --tags --exact | sed 's/^v//') && \
     export PYTORCH_BUILD_NUMBER=0 && \
+    export USE_ROCM=1 && \
     python3 setup.py bdist_wheel && \
     true
 

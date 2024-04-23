@@ -21,7 +21,7 @@ jobs:
       - name: Extract Files from Container
         run: |
           mkdir artifacts
-          docker cp build_run:/path/to/generated/files ./artifacts
+          docker cp build_run:/artifacts ./artifacts
           
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2

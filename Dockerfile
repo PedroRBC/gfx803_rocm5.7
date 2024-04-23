@@ -1,8 +1,5 @@
-
-FROM rocm/pytorch:rocm5.7_ubuntu22.04_py3.10_pytorch_2.0.1
-ENV PORT=8188 \
-    COMMANDLINE_ARGS='' \
-    MAX_JOBS=14 \ 
+FROM rocm/dev-ubuntu-22.04:5.7.1
+ENV MAX_JOBS=14 \ 
     ### Settings for AMD GPU RX570/RX580/RX590 GPU
     HSA_OVERRIDE_GFX_VERSION=8.0.3 \ 
     PYTORCH_ROCM_ARCH=gfx803 \
@@ -12,10 +9,6 @@ ENV PORT=8188 \
     USE_NINJA=1 \
     FORCE_CUDA=1 \ 
     DEBIAN_FRONTEND=noninteractive \
-    PYTHONUNBUFFERED=1 \
-    PYTHONENCODING=UTF-8\      
-    REQS_FILE='requirements.txt' \
-    COMMANDLINE_ARGS='' 
 
 ## Write the Environment VARSs to global... to compile later with while you use #docker save# or #docker commit#
 RUN echo MAX_JOB=${MAX_JOB} >> /etc/environment && \ 
@@ -39,12 +32,17 @@ RUN export ${MAX_JOB} && \
     export HSA_OVERRIDE_GFX_VERSION=${HSA_OVERRIDE_GFX_VERSION} && \
     true
 
-# Update System and install ffmpeg for SDXL video and python virtual Env
+# Update System and install python virtual Env
 RUN apt-get -y update && \
-    apt-get install -y --no-install-recommends ffmpeg virtualenv google-perftools && \
+    apt-get install -y --no-install-recommends virtualenv google-perftools && \
     pip install --upgrade pip wheel && \
     pip install cmake mkl mkl-include && \ 
     true
+
+RUN apt install software-properties-common -y && add-apt-repository ppa:deadsnakes/ppa && apt update && \
+    apt install python3.10 python3.10-venv python3.10-dev && \
+    curl -sS https://bootstrap.pypa.io/get-pip.py | python3.10 && \
+    ls -la /usr/bin/python3 && rm /usr/bin/python3 && ln -s python3.10 /usr/bin/python3
 
 # git clone PyTorch Version you need for
 ### PyTorch Version

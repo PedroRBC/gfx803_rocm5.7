@@ -34,7 +34,7 @@ RUN apt-get -y update && \
     true
 
 RUN apt install software-properties-common -y && add-apt-repository ppa:deadsnakes/ppa && apt update && \
-    apt install python3.10 python3.10-venv python3.10-dev && \
+    apt install python3.10 python3.10-venv python3.10-dev -y && \
     curl -sS https://bootstrap.pypa.io/get-pip.py | python3.10 && \
     ls -la /usr/bin/python3 && rm /usr/bin/python3 && ln -s python3.10 /usr/bin/python3
 

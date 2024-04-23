@@ -11,8 +11,7 @@ ENV MAX_JOBS=14 \
     DEBIAN_FRONTEND=noninteractive \
 
 ## Write the Environment VARSs to global... to compile later with while you use #docker save# or #docker commit#
-RUN echo MAX_JOB=${MAX_JOB} >> /etc/environment && \ 
-    echo HSA_OVERRIDE_GFX_VERSION=${HSA_OVERRIDE_GFX_VERSION} >> /etc/environment \ 
+RUN echo HSA_OVERRIDE_GFX_VERSION=${HSA_OVERRIDE_GFX_VERSION} >> /etc/environment \ 
     echo ROC_ENABLE_PRE_VEGA=${ROC_ENABLE_PRE_VEGA} >> /etc/environment && \
     echo USE_CUDA=${USE_CUDA} >> /etc/environment && \
     echo USE_ROCM=${USE_ROCM} >> /etc/environment && \
@@ -21,15 +20,12 @@ RUN echo MAX_JOB=${MAX_JOB} >> /etc/environment && \
     true
 
 ## Export the AMD Stuff
-RUN export ${MAX_JOB} && \ 
-    export ROC_ENABLE_PRE_VEGA=${ROC_ENABLE_PRE_VEGA} && \
+RUN export ROC_ENABLE_PRE_VEGA=${ROC_ENABLE_PRE_VEGA} && \
     export HSA_OVERRIDE_GFX_VERSION=${HSA_OVERRIDE_GFX_VERSION} && \
     export USE_CUDA=${USE_CUDA}  && \
     export USE_ROCM=${USE_ROCM}  && \
     export USE_NINJA=${USE_NINJA} && \
     export FORCE_CUDA=${FORCE_CUDA} && \
-    export ROC_ENABLE_PRE_VEGA=${ROC_ENABLE_PRE_VEGA} && \
-    export HSA_OVERRIDE_GFX_VERSION=${HSA_OVERRIDE_GFX_VERSION} && \
     true
 
 # Update System and install python virtual Env

@@ -43,14 +43,14 @@ RUN apt install software-properties-common -y && add-apt-repository ppa:deadsnak
 
 RUN mkdir /artifacts
 
-ENV PYTORCH_GIT_VERSION="release/2.3"
+ENV PYTORCH_GIT_VERSION="release/2.0"
 RUN echo "Checkout ${PYTORCH_GIT_VERSION} " && \  
     git clone --recursive https://github.com/pytorch/pytorch.git -b ${PYTORCH_GIT_VERSION} /pytorch && \
     true
 
 # git clone Torchvision you need
 ### Torchvision Version
-ENV TORCH_GIT_VERSION="release/0.18"
+ENV TORCH_GIT_VERSION="release/0.15"
 RUN echo "Checkout ${TORCH_GIT_VERSION} " && \ 
     git clone https://github.com/pytorch/vision.git -b ${TORCH_GIT_VERSION} /vision && \
     true

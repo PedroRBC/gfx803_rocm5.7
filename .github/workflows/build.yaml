@@ -10,7 +10,12 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
-        
+
+      - name: Cache Docker images.
+        uses: ScribeMD/docker-cache@0.5.0
+        with:
+          key: docker-builder-cache
+    
       - name: Build Docker Image
         run: docker build -t "build:latest" .
             

@@ -1,14 +1,12 @@
 FROM rocm/dev-ubuntu-22.04:5.7.1
-ENV MAX_JOBS=14 \ 
-    ### Settings for AMD GPU RX570/RX580/RX590 GPU
-    HSA_OVERRIDE_GFX_VERSION=8.0.3 \ 
+ENV HSA_OVERRIDE_GFX_VERSION=8.0.3 \ 
     PYTORCH_ROCM_ARCH=gfx803 \
     ROC_ENABLE_PRE_VEGA=1 \
     USE_CUDA=0 \  
     USE_ROCM=1 \ 
     USE_NINJA=1 \
     FORCE_CUDA=1 \ 
-    DEBIAN_FRONTEND=noninteractive \
+    DEBIAN_FRONTEND=noninteractive
 
 ## Write the Environment VARSs to global... to compile later with while you use #docker save# or #docker commit#
 RUN echo HSA_OVERRIDE_GFX_VERSION=${HSA_OVERRIDE_GFX_VERSION} >> /etc/environment \ 

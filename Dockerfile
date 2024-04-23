@@ -60,7 +60,7 @@ WORKDIR /pytorch
 RUN echo "BULDING PYTORCH $(git describe --tags --exact | sed 's/^v//')" && \
     true 
 
-RUN python setup.py clean && \
+RUN python3 setup.py clean && \
     pip install -r requirements.txt && \
     true
 

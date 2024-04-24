@@ -80,6 +80,8 @@ jobs:
           echo  [SETUP] Amd Build
           python tools/amd_build/build_amd.py
           echo  [BUILD] Bdist Wheel | Build PyTorch
+          export PYTORCH_BUILD_VERSION=2.0.0
+          export PYTORCH_BUILD_NUMBER=0
           python setup.py bdist_wheel
           mv ./pytorch/dist/torch* ./artifacts
           

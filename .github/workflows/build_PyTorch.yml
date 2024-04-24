@@ -22,6 +22,19 @@ jobs:
       FORCE_CUDA: 1
       
     steps:
+      - name: Make the env permanent during this workflow (but not the secrets)
+        shell: bash
+        run: |
+            {
+              echo "HSA_OVERRIDE_GFX_VERSION=${{ env.HSA_OVERRIDE_GFX_VERSION }}"
+              echo "PYTORCH_ROCM_ARCH=${{ env.PYTORCH_ROCM_ARCH }}"
+              echo "DESIRED_CUDA=${{ env.ROC_ENABLE_PRE_VEGA }}"
+              echo "USE_CUDA=${{ env.USE_CUDA }}"
+              echo "USE_ROCM=${{ env.USE_ROCM }}"
+              echo "USE_NINJA=${{ env.USE_NINJA }}"
+              echo "FORCE_CUDA=${{ env.FORCE_CUDA }}"
+            } >> "${GITHUB_ENV} }}"
+          
       - name: Checkout Repository
         uses: actions/checkout@v2
 
@@ -59,9 +72,8 @@ jobs:
 
       - name: Build PyTorch
         working-directory: ./pytorch
-        run: | 
-          export USE_ROCM=1
-          USE_ROCM=1 python setup.py clean
+        run: |
+          python setup.py clean
           pip install -r requirements.txt
           python tools/amd_build/build_amd.py
           python setup.py bdist_wheel
@@ -76,8 +88,7 @@ jobs:
 
       - name: Build PyTorchVision
         working-directory: ./vision
-        run: | 
-          export USE_ROCM=1
+        run: |
           python3 setup.py bdist_wheel
           RUN mv /vision/dist/torchvision-* ./artifacts
           

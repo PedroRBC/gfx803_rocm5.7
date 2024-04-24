@@ -41,36 +41,40 @@ jobs:
               pip install cmake mkl mkl-include
               pip install --upgrade pip wheel
 
+      - name: Create Used Directorys
+        run: |
+              mkdir artifacts pytorch vision
+
       - name: Checkout PyTorch
         uses: actions/checkout@v2
         with:
           repository: 'pytorch/pytorch'
           ref: 'release/2.0'
-          path: /pytorch
+          path: ./pytorch
 
       - name: Build PyTorch
-        working-directory: /pytorch
+        working-directory: ./pytorch
         run: | 
           export USE_ROCM=1
           USE_ROCM=1 python setup.py clean
           pip install -r requirements.txt
           python tools/amd_build/build_amd.py
           python setup.py bdist_wheel
-          mv /pytorch/dist/torch* /artifacts
+          mv ./pytorch/dist/torch* ./artifacts
           
       - name: Checkout PyTorchVision
         uses: actions/checkout@v2
         with:
           repository: 'pytorch/vision'
           ref: 'release/0.15'
-          path: /pytorch
+          path: ./pytorch
 
       - name: Build PyTorchVision
-        working-directory: /vision
+        working-directory: ./vision
         run: | 
           export USE_ROCM=1
           python3 setup.py bdist_wheel
-          RUN mv /vision/dist/torchvision-* /artifacts
+          RUN mv /vision/dist/torchvision-* ./artifacts
           
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2

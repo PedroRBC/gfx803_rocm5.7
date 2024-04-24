@@ -17,7 +17,7 @@ jobs:
       PYTORCH_ROCM_ARCH: gfx803
       ROC_ENABLE_PRE_VEGA: 1
       USE_CUDA: 0
-      USE_ROCM: 1
+      USE_ROCM: true
       USE_NINJA: 1
       FORCE_CUDA: 1
       

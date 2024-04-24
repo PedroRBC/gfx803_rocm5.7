@@ -3,7 +3,7 @@ ENV HSA_OVERRIDE_GFX_VERSION=8.0.3 \
     PYTORCH_ROCM_ARCH=gfx803 \
     ROC_ENABLE_PRE_VEGA=1 \
     USE_CUDA=0 \  
-    USE_ROCM=1 \ 
+    USE_ROCM=true \ 
     USE_NINJA=1 \
     FORCE_CUDA=1 \ 
     DEBIAN_FRONTEND=noninteractive
@@ -60,7 +60,7 @@ WORKDIR /pytorch
 RUN echo "BULDING PYTORCH $(git describe --tags --exact | sed 's/^v//')" && \
     true 
 
-RUN export USE_ROCM=1 && USE_ROCM=1 python3 setup.py clean && \
+RUN export USE_ROCM=true && USE_ROCM=true python3 setup.py clean && \
     pip install -r requirements.txt && \
     true
 
@@ -71,7 +71,7 @@ RUN python3 tools/amd_build/build_amd.py && \
 RUN echo "** BUILDING PYTORCH *** " && \
     export PYTORCH_BUILD_VERSION=$(git describe --tags --exact | sed 's/^v//') && \
     export PYTORCH_BUILD_NUMBER=0 && \
-    export USE_ROCM=1 && \
+    export USE_ROCM=true && \
     python3 setup.py bdist_wheel && \
     true
 

@@ -29,7 +29,12 @@ jobs:
         uses: neoblizz/rocm-setup@v0.1.4-beta
         with:
           rocm: ${{github.event.inputs.rocm_version}}
-
+      - name: Set up GCC
+        uses: egor-tensin/setup-gcc@v1.3
+        with:
+          version: 11
+          platform: x64
+    
       - name: Checkout Repository
         uses: actions/setup-python@v5
         with:

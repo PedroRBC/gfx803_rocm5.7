@@ -73,9 +73,13 @@ jobs:
       - name: Build PyTorch
         working-directory: ./pytorch
         run: |
+          echo [SETUP] Setup.py Clean
           python setup.py clean
+          echo  [SETUP] pip Requirements
           pip install -r requirements.txt
+          echo  [SETUP] Amd Build
           python tools/amd_build/build_amd.py
+          echo  [BUILD] Bdist Wheel | Build PyTorch
           python setup.py bdist_wheel
           mv ./pytorch/dist/torch* ./artifacts
           
